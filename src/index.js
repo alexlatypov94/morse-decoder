@@ -38,7 +38,37 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-    // write your solution here
+    let arr = expr.match(/.{1,10}/g)
+    let newArr  = []
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] = arr[i].match(/.{1,2}/g)
+      for (let j = 0; j < arr[i].length; j++) {
+        if(arr[i][j] === "10") {
+          arr[i][j] = "."
+        }
+        if(arr[i][j] === "11") {
+            arr[i][j] = "-"
+        }
+        if(arr[i][j] === "**") {
+            arr[i][j] = "aa"
+        }
+      }
+      newArr.push(arr[i].join(''))
+    }
+
+    let re = /00/gi
+    let star = /aaaaaaaaaa/gi
+    
+    for (let a = 0; a < newArr.length; a++) {
+      newArr[a] = newArr[a].replace(re, "")
+      newArr[a] = newArr[a].replace(star, " ")
+      for (key in MORSE_TABLE) {
+        if(newArr[a] ===  key){
+          newArr[a] = MORSE_TABLE[key]
+        }
+      }
+    }
+    return newArr.join('')
 }
 
 module.exports = {
